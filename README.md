@@ -1,6 +1,6 @@
-# Demo.Ndjson.AsyncStreams
+# Using Async Streams, JSONL (JSON Lines), and NDJSON (Newline Delimited JSON) for Streaming JSON Objects In .NET
 
-Sample project for demonstrating how to use async streams and NDJSON to improve user experience by streaming JSON objects from server to client and client to server in .NET. You can read more here:
+Sample project for demonstrating how to use async streams, JSONL (JSON Lines), and NDJSON (Newline Delimited JSON) to improve user experience by streaming JSON objects from server to client and client to server in .NET. You can read more here:
 
 - [Fetch API, Streams API, NDJSON, and ASP.NET Core MVC](https://www.tpeczek.com/2019/04/fetch-api-streams-api-ndjson-and-aspnet.html)
 - [Consuming JSON Objects Stream (NDJSON) With HttpClient](https://www.tpeczek.com/2020/10/consuming-json-objects-stream-ndjson.html)

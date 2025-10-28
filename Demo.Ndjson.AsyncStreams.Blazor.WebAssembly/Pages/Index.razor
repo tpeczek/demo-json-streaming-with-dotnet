@@ -7,6 +7,7 @@
 
 <button disabled="@IsOperationInProgress" @onclick="FetchWeatherForecastsJson">Fetch Weather Forecast</button>
 <button disabled="@IsOperationInProgress" @onclick="FetchWeatherForecastsJsonStream">Fetch Weather Forecast Stream (JSON)</button>
+<button disabled="@IsOperationInProgress" @onclick="FetchWeatherForecastsJsonlStream">Fetch Weather Forecast Stream (JSONL)</button>
 <button disabled="@IsOperationInProgress" @onclick="FetchWeatherForecastsNdjsonStream">Fetch Weather Forecast Stream (NDJSON)</button>
 <button disabled="@IsOperationInProgress" @onclick="PostWeatherForecastsNdjsonStream">Post Weather Forecast Stream (NDJSON)</button>
 <button disabled="@IsOperationInProgress" @onclick="PostWeatherForecastsJsonStream">Post Weather Forecast Stream (JSON)</button>
@@ -106,7 +107,17 @@
         }
     }
 
+    private async Task FetchWeatherForecastsJsonlStream()
+    {
+        await FetchWeatherForecastsJsonlOrNdjsonStream("application/jsonl");
+    }
+
     private async Task FetchWeatherForecastsNdjsonStream()
+    {
+        await FetchWeatherForecastsJsonlOrNdjsonStream("application/x-ndjson");
+    }
+
+    private async Task FetchWeatherForecastsJsonlOrNdjsonStream(string accept)
     {
         CancellationToken cancellationToken = GetCancellationToken();
 
@@ -119,7 +130,7 @@
             StateHasChanged();
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "api/WeatherForecasts/negotiate-stream");
-            request.Headers.Add("Accept", "application/x-ndjson");
+            request.Headers.Add("Accept", accept);
             request.SetBrowserResponseStreamingEnabled(true);
 
             using HttpResponseMessage response = await Http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Ndjson.AsyncStreams.Ne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Ndjson.AsyncStreams.Blazor.WebAssembly", "Demo.Ndjson.AsyncStreams.Blazor.WebAssembly\Demo.Ndjson.AsyncStreams.Blazor.WebAssembly.csproj", "{3C86EC87-828D-4F0E-BBB1-94D7B07CC264}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Ndjson.AsyncStreams.AspNetCore.MinimalApi", "Demo.Ndjson.AsyncStreams.AspNetCore.MinimalApi\Demo.Ndjson.AsyncStreams.AspNetCore.MinimalApi.csproj", "{9B7944E9-D6DA-4B36-BD4D-9B54F9B04D24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.JsonStreaming.AspNetCore.MinimalApi", "Demo.JsonStreaming.AspNetCore.MinimalApi\Demo.JsonStreaming.AspNetCore.MinimalApi.csproj", "{9B7944E9-D6DA-4B36-BD4D-9B54F9B04D24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

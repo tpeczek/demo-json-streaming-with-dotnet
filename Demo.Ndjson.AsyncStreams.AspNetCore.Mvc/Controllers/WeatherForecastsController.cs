@@ -14,6 +14,9 @@ namespace Demo.Ndjson.AsyncStreams.AspNetCore.Mvc
     [ApiController]
     public class WeatherForecastsController : Controller
     {
+        private const string APPLICATION_NDJSON_MEDIA_TYPE = "application/x-ndjson";
+        private const string APPLICATION_JSONL_MEDIA_TYPE = "application/jsonl";
+
         private readonly IWeatherForecaster _weatherForecaster;
         private readonly ILogger _logger;
 
@@ -36,11 +39,18 @@ namespace Demo.Ndjson.AsyncStreams.AspNetCore.Mvc
             return weatherForecasts;
         }
 
-        [HttpGet("stream")]
+        [HttpGet("ndjson-stream")]
         // This action always returns NDJSON.
-        public NdjsonAsyncEnumerableResult<WeatherForecast> GetStream(CancellationToken cancellationToken)
+        public NdjsonAsyncEnumerableResult<WeatherForecast> GetNdjsonStream(CancellationToken cancellationToken)
         {
-            return new NdjsonAsyncEnumerableResult<WeatherForecast>(StreamWeatherForecastsAsync(cancellationToken));
+            return new NdjsonAsyncEnumerableResult<WeatherForecast>(StreamWeatherForecastsAsync(cancellationToken), APPLICATION_NDJSON_MEDIA_TYPE);
+        }
+
+        [HttpGet("jsonl-stream")]
+        // This action always returns NDJSON.
+        public NdjsonAsyncEnumerableResult<WeatherForecast> GetJsonlStream(CancellationToken cancellationToken)
+        {
+            return new NdjsonAsyncEnumerableResult<WeatherForecast>(StreamWeatherForecastsAsync(cancellationToken), APPLICATION_JSONL_MEDIA_TYPE);
         }
 
         [HttpGet("negotiate-stream")]

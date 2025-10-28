@@ -3,7 +3,7 @@
     let abortController;
     let weatherForecastsTable;
 
-    let fetchWeatherForecastsJsonButton, fetchWeatherForecastsJsonStreamButton, fetchWeatherForecastsNdjsonStreamButton, postWeatherForecastsNdjsonStreamButton, abortButton;
+    let fetchWeatherForecastsJsonButton, fetchWeatherForecastsJsonStreamButton, fetchWeatherForecastsJsonlStreamButton, fetchWeatherForecastsNdjsonStreamButton, postWeatherForecastsNdjsonStreamButton, abortButton;
 
     function initializeUI() {
         fetchWeatherForecastsJsonButton = document.getElementById('fetch-weather-forecasts-json');
@@ -11,6 +11,9 @@
 
         fetchWeatherForecastsJsonStreamButton = document.getElementById('fetch-weather-forecasts-json-stream');
         fetchWeatherForecastsJsonStreamButton.addEventListener('click', fetchWeatherForecastsJsonStream);
+
+        fetchWeatherForecastsJsonlStreamButton = document.getElementById('fetch-weather-forecasts-jsonl-stream');
+        fetchWeatherForecastsJsonlStreamButton.addEventListener('click', fetchWeatherForecastsJsonlStream);
 
         fetchWeatherForecastsNdjsonStreamButton = document.getElementById('fetch-weather-forecasts-ndjson-stream');
         fetchWeatherForecastsNdjsonStreamButton.addEventListener('click', fetchWeatherForecastsNdjsonStream);
@@ -76,6 +79,22 @@
             });
     };
 
+    function fetchWeatherForecastsJsonlStream() {
+        abortController = new AbortController();
+
+        switchButtonsState(true);
+        clearWeatherForecasts();
+
+        fetch('api/WeatherForecasts/negotiate-stream', { headers: { 'Accept': 'application/jsonl' }, signal: abortController.signal })
+            .then(function (response) {
+                const weatherForecasts = response.body
+                    .pipeThrough(new TextDecoderStream())
+                    .pipeThrough(transformNdjsonStream());
+
+                readWeatherForecastsNdjsonStream(weatherForecasts.getReader());
+            });
+    };
+
     function postWeatherForecastsNdjsonStream() {
         abortController = new AbortController();
 
@@ -99,6 +118,7 @@
     function switchButtonsState(operationInProgress) {
         fetchWeatherForecastsJsonButton.disabled = operationInProgress;
         fetchWeatherForecastsJsonStreamButton.disabled = operationInProgress;
+        fetchWeatherForecastsJsonlStreamButton.disabled = operationInProgress;
         fetchWeatherForecastsNdjsonStreamButton.disabled = operationInProgress;
         postWeatherForecastsNdjsonStreamButton = operationInProgress;
 

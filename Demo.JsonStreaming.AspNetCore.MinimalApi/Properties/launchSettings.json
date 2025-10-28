@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "Demo.Ndjson.AsyncStreams.AspNetCore.MinimalApi": {
+    "Demo.JsonStreaming.AspNetCore.MinimalApi": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,

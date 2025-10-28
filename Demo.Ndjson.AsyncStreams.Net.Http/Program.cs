@@ -15,7 +15,10 @@ namespace Demo.Ndjson.AsyncStreams.Net.Http
 {
     class Program
     {
+        // Demo.Ndjson.AsyncStreams.AspNetCore.Mvc
         private const string BASE_URL = "https://localhost:5001";
+
+        // Demo.JsonStreaming.AspNetCore.MinimalApi
         // private const string BASE_URL = "https://localhost:7188";
 
         private static readonly IWeatherForecaster _weatherForecaster = new WeatherForecaster();
@@ -37,13 +40,17 @@ namespace Demo.Ndjson.AsyncStreams.Net.Http
 
             try
             {
-                await ConsumeNdjsonStreamAsync(cancellationToken).ConfigureAwait(false);
+                await ConsumeJsonlOrNdjsonStreamAsync("ndjson-stream", cancellationToken).ConfigureAwait(false);
+                
+                await ConsumeJsonlOrNdjsonStreamAsync("jsonl-stream", cancellationToken).ConfigureAwait(false);
 
                 await NegotiateRawJsonStreamAsync(cancellationToken).ConfigureAwait(false);
 
                 await NegotiateJsonStreamAsync(cancellationToken).ConfigureAwait(false);
 
-                await NegotiateNdjsonStreamAsync(cancellationToken).ConfigureAwait(false);
+                await NegotiateJsonlOrNdjsonStreamAsync("application/x-ndjson", cancellationToken).ConfigureAwait(false);
+
+                await NegotiateJsonlOrNdjsonStreamAsync("application/jsonl", cancellationToken).ConfigureAwait(false);
 
                 await StreamJsonStreamAsync(cancellationToken).ConfigureAwait(false);
 
@@ -60,14 +67,14 @@ namespace Demo.Ndjson.AsyncStreams.Net.Http
             }
         }
 
-        private static async Task ConsumeNdjsonStreamAsync(CancellationToken cancellationToken)
+        private static async Task ConsumeJsonlOrNdjsonStreamAsync(string streamEndpoint, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"-- {nameof(ConsumeNdjsonStreamAsync)} --");
+            Console.WriteLine($"-- {nameof(ConsumeJsonlOrNdjsonStreamAsync)}({streamEndpoint}) --");
             Console.WriteLine($"[{DateTime.UtcNow:hh:mm:ss.fff}] Receving weather forecasts . . .");
 
             using HttpClient httpClient = new();
 
-            using HttpResponseMessage response = await httpClient.GetAsync($"{BASE_URL}/api/WeatherForecasts/stream", HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+            using HttpResponseMessage response = await httpClient.GetAsync($"{BASE_URL}/api/WeatherForecasts/{streamEndpoint}", HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
 
@@ -134,13 +141,13 @@ namespace Demo.Ndjson.AsyncStreams.Net.Http
             Console.WriteLine();
         }
 
-        private static async Task NegotiateNdjsonStreamAsync(CancellationToken cancellationToken)
+        private static async Task NegotiateJsonlOrNdjsonStreamAsync(string accept, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"-- {nameof(NegotiateNdjsonStreamAsync)} --");
+            Console.WriteLine($"-- {nameof(NegotiateJsonlOrNdjsonStreamAsync)}({accept}) --");
             Console.WriteLine($"[{DateTime.UtcNow:hh:mm:ss.fff}] Receving weather forecasts . . .");
 
             using HttpClient httpClient = new();
-            httpClient.DefaultRequestHeaders.Add("Accept", "application/x-ndjson");
+            httpClient.DefaultRequestHeaders.Add("Accept", accept);
 
             using HttpResponseMessage response = await httpClient.GetAsync($"{BASE_URL}/api/WeatherForecasts/negotiate-stream", HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
 

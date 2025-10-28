@@ -25,8 +25,11 @@ app.MapGet("/api/WeatherForecasts", async (IWeatherForecaster weatherForecaster,
 // This endpoint returns streamed JSON.
 app.MapGet("/api/WeatherForecasts/negotiate-stream", (IWeatherForecaster weatherForecaster, CancellationToken cancellationToken) => StreamWeatherForecastsAsync(weatherForecaster, cancellationToken));
 
-// This endpoint returns NDJSON.
-app.MapGet("/api/WeatherForecasts/stream", (IWeatherForecaster weatherForecaster, CancellationToken cancellationToken) => Results.Extensions.Ndjson(StreamWeatherForecastsAsync(weatherForecaster, cancellationToken)));
+// This endpoint streams NDJSON.
+app.MapGet("/api/WeatherForecasts/ndjson-stream", (IWeatherForecaster weatherForecaster, CancellationToken cancellationToken) => Results.Extensions.Ndjson(StreamWeatherForecastsAsync(weatherForecaster, cancellationToken)));
+
+// This endpoint streams JSONL.
+app.MapGet("/api/WeatherForecasts/jsonl-stream", (IWeatherForecaster weatherForecaster, CancellationToken cancellationToken) => Results.Extensions.Jsonl(StreamWeatherForecastsAsync(weatherForecaster, cancellationToken)));
 
 app.Run();
 

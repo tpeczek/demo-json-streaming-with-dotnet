@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Demo.Ndjson.AsyncStreams.AspNetCore.Mvc
+namespace Demo.JsonStreaming.AspNetCore.Mvc
 {
     public class Program
     {

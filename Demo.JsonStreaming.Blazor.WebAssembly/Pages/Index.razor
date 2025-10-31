@@ -3,11 +3,12 @@
 @using global::Ndjson.AsyncStreams.Net.Http
 @inject HttpClient Http
 
-<PageTitle>Demo.Ndjson.AsyncStreams.Blazor.WebAssembly</PageTitle>
+<PageTitle>Demo.JsonStreaming.Blazor.WebAssembly</PageTitle>
 
 <button disabled="@IsOperationInProgress" @onclick="FetchWeatherForecastsJson">Fetch Weather Forecast</button>
 <button disabled="@IsOperationInProgress" @onclick="FetchWeatherForecastsJsonStream">Fetch Weather Forecast Stream (JSON)</button>
 <button disabled="@IsOperationInProgress" @onclick="FetchWeatherForecastsJsonlStream">Fetch Weather Forecast Stream (JSONL)</button>
+<button disabled="@IsOperationInProgress" @onclick="PostWeatherForecastsJsonlStream">Post Weather Forecast Stream (JSONL)</button>
 <button disabled="@IsOperationInProgress" @onclick="FetchWeatherForecastsNdjsonStream">Fetch Weather Forecast Stream (NDJSON)</button>
 <button disabled="@IsOperationInProgress" @onclick="PostWeatherForecastsNdjsonStream">Post Weather Forecast Stream (NDJSON)</button>
 <button disabled="@IsOperationInProgress" @onclick="PostWeatherForecastsJsonStream">Post Weather Forecast Stream (JSON)</button>
@@ -157,7 +158,17 @@
         }
     }
 
+    private async Task PostWeatherForecastsJsonlStream()
+    {
+        await PostWeatherForecastsJsonlOrNdjsonStream("application/jsonl");
+    }
+
     private async Task PostWeatherForecastsNdjsonStream()
+    {
+        await PostWeatherForecastsJsonlOrNdjsonStream("application/x-ndjson");
+    }
+
+    private async Task PostWeatherForecastsJsonlOrNdjsonStream(string mediaType)
     {
         CancellationToken cancellationToken = GetCancellationToken();
 
@@ -168,7 +179,7 @@
             StateHasChanged();
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "api/WeatherForecasts/stream");
-            request.Content = new NdjsonAsyncEnumerableContent<WeatherForecast>(StreamWeatherForecastsAsync());
+            request.Content = new NdjsonAsyncEnumerableContent<WeatherForecast>(StreamWeatherForecastsAsync(), mediaType);
             request.SetBrowserRequestStreamingEnabled(true);
 
             using HttpResponseMessage response = await Http.SendAsync(request, cancellationToken);

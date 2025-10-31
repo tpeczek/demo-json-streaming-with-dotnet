@@ -3,7 +3,7 @@
     let abortController;
     let weatherForecastsTable;
 
-    let fetchWeatherForecastsJsonButton, fetchWeatherForecastsJsonStreamButton, fetchWeatherForecastsJsonlStreamButton, fetchWeatherForecastsNdjsonStreamButton, postWeatherForecastsNdjsonStreamButton, abortButton;
+    let fetchWeatherForecastsJsonButton, fetchWeatherForecastsJsonStreamButton, fetchWeatherForecastsJsonlStreamButton, postWeatherForecastsJsonlStreamButton, fetchWeatherForecastsNdjsonStreamButton, postWeatherForecastsNdjsonStreamButton, abortButton;
 
     function initializeUI() {
         fetchWeatherForecastsJsonButton = document.getElementById('fetch-weather-forecasts-json');
@@ -14,6 +14,9 @@
 
         fetchWeatherForecastsJsonlStreamButton = document.getElementById('fetch-weather-forecasts-jsonl-stream');
         fetchWeatherForecastsJsonlStreamButton.addEventListener('click', fetchWeatherForecastsJsonlStream);
+
+        postWeatherForecastsJsonlStreamButton = document.getElementById('post-weather-forecasts-jsonl-stream');
+        postWeatherForecastsJsonlStreamButton.addEventListener('click', postWeatherForecastsJsonlStream);
 
         fetchWeatherForecastsNdjsonStreamButton = document.getElementById('fetch-weather-forecasts-ndjson-stream');
         fetchWeatherForecastsNdjsonStreamButton.addEventListener('click', fetchWeatherForecastsNdjsonStream);
@@ -63,46 +66,46 @@
         };
     }
 
+    function fetchWeatherForecastsJsonlStream() {
+        fetchWeatherForecastsJsonlOrNdjonStream('application/jsonl');
+    };
+
     function fetchWeatherForecastsNdjsonStream() {
+        fetchWeatherForecastsJsonlOrNdjonStream('application/x-ndjson');
+    };
+
+    function fetchWeatherForecastsJsonlOrNdjonStream(accept) {
         abortController = new AbortController();
 
         switchButtonsState(true);
         clearWeatherForecasts();
 
-        fetch('api/WeatherForecasts/negotiate-stream', { headers: { 'Accept': 'application/x-ndjson' }, signal: abortController.signal })
+        fetch('api/WeatherForecasts/negotiate-stream', { headers: { 'Accept': accept }, signal: abortController.signal })
             .then(function (response) {
                 const weatherForecasts = response.body
                     .pipeThrough(new TextDecoderStream())
-                    .pipeThrough(transformNdjsonStream());
+                    .pipeThrough(transformJsonlOrNdjonStream());
 
-                readWeatherForecastsNdjsonStream(weatherForecasts.getReader());
+                readWeatherForecastsJsonlOrNdjonStream(weatherForecasts.getReader());
             });
     };
 
-    function fetchWeatherForecastsJsonlStream() {
-        abortController = new AbortController();
-
-        switchButtonsState(true);
-        clearWeatherForecasts();
-
-        fetch('api/WeatherForecasts/negotiate-stream', { headers: { 'Accept': 'application/jsonl' }, signal: abortController.signal })
-            .then(function (response) {
-                const weatherForecasts = response.body
-                    .pipeThrough(new TextDecoderStream())
-                    .pipeThrough(transformNdjsonStream());
-
-                readWeatherForecastsNdjsonStream(weatherForecasts.getReader());
-            });
+    function postWeatherForecastsJsonlStream() {
+        postWeatherForecastsJsonlOrNdjonStream('application/jsonl');
     };
 
     function postWeatherForecastsNdjsonStream() {
+        postWeatherForecastsJsonlOrNdjonStream('application/x-ndjson');
+    };
+
+    function postWeatherForecastsJsonlOrNdjonStream(contentType) {
         abortController = new AbortController();
 
         switchButtonsState(true);
         clearWeatherForecasts();
 
         const weatherForecastsStream = WeatherForecaster.getWeatherForecastsStream().pipeThrough(new TextEncoderStream());
-        fetch('api/WeatherForecasts/stream', { method: 'POST', headers: { 'Content-Type': 'application/x-ndjson' }, body: weatherForecastsStream, duplex: 'half', signal: abortController.signal })
+        fetch('api/WeatherForecasts/stream', { method: 'POST', headers: { 'Content-Type': contentType }, body: weatherForecastsStream, duplex: 'half', signal: abortController.signal })
             .then(function (response) {
                 switchButtonsState(false);
             });
@@ -119,6 +122,7 @@
         fetchWeatherForecastsJsonButton.disabled = operationInProgress;
         fetchWeatherForecastsJsonStreamButton.disabled = operationInProgress;
         fetchWeatherForecastsJsonlStreamButton.disabled = operationInProgress;
+        postWeatherForecastsJsonlStreamButton.disabled = operationInProgress;
         fetchWeatherForecastsNdjsonStreamButton.disabled = operationInProgress;
         postWeatherForecastsNdjsonStreamButton = operationInProgress;
 
@@ -140,33 +144,33 @@
         weatherForecastRow.insertCell(3).appendChild(document.createTextNode(weatherForecast.summary));
     };
 
-    function transformNdjsonStream() {
-        let ndjsonBuffer = '';
+    function transformJsonlOrNdjonStream() {
+        let buffer = '';
 
         return new TransformStream({
             transform: function(ndjsonChunk, controller) {
-                ndjsonBuffer += ndjsonChunk;
+                buffer += ndjsonChunk;
 
-                const jsonValues = ndjsonBuffer.split('\n');
+                const jsonValues = buffer.split('\n');
                 jsonValues.slice(0, -1).forEach(function (jsonValue) { controller.enqueue(JSON.parse(jsonValue)); });
 
-                ndjsonBuffer = jsonValues[jsonValues.length - 1];
+                buffer = jsonValues[jsonValues.length - 1];
             },
             flush: function(controller) {
-                if (ndjsonBuffer) {
-                    controller.enqueue(JSON.parse(ndjsonBuffer));
+                if (buffer) {
+                    controller.enqueue(JSON.parse(buffer));
                 }
             }
         });
     };
 
-    function readWeatherForecastsNdjsonStream(weatherForecastsStreamReader) {
+    function readWeatherForecastsJsonlOrNdjonStream(weatherForecastsStreamReader) {
         weatherForecastsStreamReader.read()
             .then(function (result) {
                 if (!result.done) {
                     appendWeatherForecast(result.value);
 
-                    readWeatherForecastsNdjsonStream(weatherForecastsStreamReader);
+                    readWeatherForecastsJsonlOrNdjonStream(weatherForecastsStreamReader);
                 } else {
                     switchButtonsState(false);
                 }

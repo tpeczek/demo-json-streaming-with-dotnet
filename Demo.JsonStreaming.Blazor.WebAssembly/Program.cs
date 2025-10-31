@@ -1,4 +1,4 @@
-using Demo.Ndjson.AsyncStreams.Blazor.WebAssembly;
+using Demo.JsonStreaming.Blazor.WebAssembly;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

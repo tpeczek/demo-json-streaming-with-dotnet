@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Demo.Ndjson.AsyncStreams.AspNetCore.Mvc": {
+    "Demo.JsonStreaming.AspNetCore.Mvc": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

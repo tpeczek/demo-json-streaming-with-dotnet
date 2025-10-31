@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Demo.Ndjson.AsyncStreams.AspNetCore.Mvc.Formatters;
+using Demo.JsonStreaming.AspNetCore.Mvc.Formatters;
 
 
 namespace Microsoft.Extensions.DependencyInjection

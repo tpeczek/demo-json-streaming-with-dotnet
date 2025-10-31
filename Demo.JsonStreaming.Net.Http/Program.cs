@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using System.Buffers;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,11 +10,11 @@ using System.Collections.Generic;
 using Ndjson.AsyncStreams.Net.Http;
 using Demo.WeatherForecasts;
 
-namespace Demo.Ndjson.AsyncStreams.Net.Http
+namespace Demo.JsonStreaming.Net.Http
 {
     class Program
     {
-        // Demo.Ndjson.AsyncStreams.AspNetCore.Mvc
+        // Demo.JsonStreaming.AspNetCore.Mvc
         private const string BASE_URL = "https://localhost:5001";
 
         // Demo.JsonStreaming.AspNetCore.MinimalApi
@@ -55,6 +54,8 @@ namespace Demo.Ndjson.AsyncStreams.Net.Http
                 await StreamJsonStreamAsync(cancellationToken).ConfigureAwait(false);
 
                 await StreamNdjsonAsync(cancellationToken).ConfigureAwait(false);
+
+                await StreamJsonlAsync(cancellationToken).ConfigureAwait(false);
 
                 Console.CancelKeyPress -= consoleCancelEventHandler;
 
@@ -170,6 +171,21 @@ namespace Demo.Ndjson.AsyncStreams.Net.Http
             using HttpClient httpClient = new();
 
             using HttpResponseMessage response = await httpClient.PostAsNdjsonAsync($"{BASE_URL}/api/WeatherForecasts/stream", StreamWeatherForecastsAsync(), cancellationToken).ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+
+            Console.WriteLine("Weather forecasts has been send.");
+            Console.WriteLine();
+        }
+
+        private static async Task StreamJsonlAsync(CancellationToken cancellationToken)
+        {
+            Console.WriteLine($"-- {nameof(StreamJsonlAsync)} --");
+            Console.WriteLine("Sending weather forecasts . . .");
+
+            using HttpClient httpClient = new();
+
+            using HttpResponseMessage response = await httpClient.PostAsJsonlAsync($"{BASE_URL}/api/WeatherForecasts/stream", StreamWeatherForecastsAsync(), cancellationToken).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
 

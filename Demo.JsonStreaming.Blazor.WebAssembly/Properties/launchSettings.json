@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Demo.Ndjson.AsyncStreams.Blazor.WebAssembly": {
+    "Demo.JsonStreaming.Blazor.WebAssembly": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

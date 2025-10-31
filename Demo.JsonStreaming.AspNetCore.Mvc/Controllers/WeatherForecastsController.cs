@@ -8,7 +8,7 @@ using Demo.WeatherForecasts;
 using System.Threading;
 using System.Runtime.CompilerServices;
 
-namespace Demo.Ndjson.AsyncStreams.AspNetCore.Mvc
+namespace Demo.JsonStreaming.AspNetCore.Mvc
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -47,21 +47,21 @@ namespace Demo.Ndjson.AsyncStreams.AspNetCore.Mvc
         }
 
         [HttpGet("jsonl-stream")]
-        // This action always returns NDJSON.
+        // This action always returns JSONL.
         public NdjsonAsyncEnumerableResult<WeatherForecast> GetJsonlStream(CancellationToken cancellationToken)
         {
             return new NdjsonAsyncEnumerableResult<WeatherForecast>(StreamWeatherForecastsAsync(cancellationToken), APPLICATION_JSONL_MEDIA_TYPE);
         }
 
         [HttpGet("negotiate-stream")]
-        // This action returns JSON or NDJSON depending on Accept request header.
+        // This action returns JSON, JSONL, or NDJSON depending on Accept request header.
         public IAsyncEnumerable<WeatherForecast> NegotiateStream(CancellationToken cancellationToken)
         {
             return StreamWeatherForecastsAsync(cancellationToken);
         }
 
         [HttpPost("stream")]
-        // This action accepts NDJSON.
+        // This action accepts JSONL or NDJSON.
         public async Task<IActionResult> PostStream(IAsyncEnumerable<WeatherForecast> weatherForecasts)
         {
             await foreach (WeatherForecast weatherForecast in weatherForecasts)

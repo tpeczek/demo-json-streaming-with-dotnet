@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace Demo.Ndjson.AsyncStreams.Net.Http
+namespace Demo.JsonStreaming.Net.Http
 {
     internal class JsonAsyncEnumerableContent<T> : HttpContent
     {

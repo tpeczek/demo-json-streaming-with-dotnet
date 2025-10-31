@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Logging;
 
-namespace Demo.Ndjson.AsyncStreams.AspNetCore.Mvc.Formatters
+namespace Demo.JsonStreaming.AspNetCore.Mvc.Formatters
 {
     internal class SystemTextStreamedJsonInputFormatter : SystemTextJsonInputFormatter
     {

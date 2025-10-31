@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Demo.WeatherForecasts;
 
-namespace Demo.Ndjson.AsyncStreams.AspNetCore.Mvc
+namespace Demo.JsonStreaming.AspNetCore.Mvc
 {
     public class Startup
     {

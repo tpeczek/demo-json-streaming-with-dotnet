@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Ndjson.AsyncStreams.AspNetCore.Mvc", "Demo.Ndjson.AsyncStreams.AspNetCore.Mvc\Demo.Ndjson.AsyncStreams.AspNetCore.Mvc.csproj", "{75DD6E3F-E55D-4DA5-A003-81E51978EBBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.JsonStreaming.AspNetCore.Mvc", "Demo.JsonStreaming.AspNetCore.Mvc\Demo.JsonStreaming.AspNetCore.Mvc.csproj", "{75DD6E3F-E55D-4DA5-A003-81E51978EBBB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.WeatherForecasts", "Demo.WeatherForecasts\Demo.WeatherForecasts.csproj", "{5F6E1059-CF61-4EA6-9A2D-44C6B8949F99}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Ndjson.AsyncStreams.Net.Http", "Demo.Ndjson.AsyncStreams.Net.Http\Demo.Ndjson.AsyncStreams.Net.Http.csproj", "{6D9AC9FF-3E29-435B-9190-2AF96ECC47EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.JsonStreaming.Net.Http", "Demo.JsonStreaming.Net.Http\Demo.JsonStreaming.Net.Http.csproj", "{6D9AC9FF-3E29-435B-9190-2AF96ECC47EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Ndjson.AsyncStreams.Blazor.WebAssembly", "Demo.Ndjson.AsyncStreams.Blazor.WebAssembly\Demo.Ndjson.AsyncStreams.Blazor.WebAssembly.csproj", "{3C86EC87-828D-4F0E-BBB1-94D7B07CC264}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.JsonStreaming.Blazor.WebAssembly", "Demo.JsonStreaming.Blazor.WebAssembly\Demo.JsonStreaming.Blazor.WebAssembly.csproj", "{3C86EC87-828D-4F0E-BBB1-94D7B07CC264}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.JsonStreaming.AspNetCore.MinimalApi", "Demo.JsonStreaming.AspNetCore.MinimalApi\Demo.JsonStreaming.AspNetCore.MinimalApi.csproj", "{9B7944E9-D6DA-4B36-BD4D-9B54F9B04D24}"
 EndProject

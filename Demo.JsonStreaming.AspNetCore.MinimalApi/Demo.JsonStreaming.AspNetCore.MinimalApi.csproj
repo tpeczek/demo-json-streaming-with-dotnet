@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Ndjson.AsyncStreams.AspNetCore" Version="1.1.0" />
+    <PackageReference Include="Ndjson.AsyncStreams.AspNetCore" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Demo.WeatherForecasts\Demo.WeatherForecasts.csproj" />

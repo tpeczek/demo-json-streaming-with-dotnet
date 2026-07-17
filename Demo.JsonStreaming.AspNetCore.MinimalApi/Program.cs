@@ -1,4 +1,6 @@
 using Demo.WeatherForecasts;
+using Microsoft.AspNetCore.Mvc;
+using Ndjson.AsyncStreams.AspNetCore.Http;
 using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,22 @@ app.MapGet("/api/WeatherForecasts/ndjson-stream", (IWeatherForecaster weatherFor
 
 // This endpoint streams JSONL.
 app.MapGet("/api/WeatherForecasts/jsonl-stream", (IWeatherForecaster weatherForecaster, CancellationToken cancellationToken) => Results.Extensions.Jsonl(StreamWeatherForecastsAsync(weatherForecaster, cancellationToken)));
+
+// This endpoint accepts JSONL or NDJSON.
+app.MapPost("/api/WeatherForecasts/stream", async (NdjsonAsyncEnumerableBinding<WeatherForecast> weatherForecasts, ILogger<Program> logger) =>
+{
+    if (weatherForecasts.Error != null)
+    {
+        return weatherForecasts.Error;
+    }
+
+    await foreach (WeatherForecast weatherForecast in weatherForecasts.Value)
+    {
+        logger.LogInformation($"{weatherForecast.Summary} ({DateTime.UtcNow})");
+    }
+
+    return Results.Ok();
+});
 
 app.Run();
 
